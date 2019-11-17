@@ -1,58 +1,38 @@
 #include <iostream>
+#include <cstdlib>
+
 using namespace std;
-int main()
-// Badysiak Paweł
-// Wadas Michał
-{
-cout<<"Podaj ilość wierszy diamentu:  ";
-
-    int size;
-  cin>>size;
-
-    int z=1;
-  for ( int i=0; i<=size; i++)
-  {
-    for (int j=size; j>i; j--)
-    {
-      cout<<" ";
-   }
-
-    cout<<"*";  
-
-    if ( i>0)
-    {
-      for ( int k=1; k<=z; k++)
-      {
-        cout<<" ";
+int main(){
+  int x[3][3];
+  int y[3][3];
+  int s[3][3];
+  
+  for(int i=0; i<3; i++){
+      for(int j=0; j<3; j++){
+      cin >> x[i][j];
       }
-      z+=2;
-      cout<<"*";
+  }
+  for(int i=0; i<3; i++){
+      for(int j=0; j<3; j++){
+      cin >> y[i][j];
+      }
+  }
+  
+  for(int i=0; i<3; i++){
+      for(int j=0; j<3; j++){
+          s[i][j] = 0;
+          for(int k=0; k<3; k++){
+            s[i][j] += x[i][k] * y[k][j]; 
+          }
+            
+      }
+  }
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+        cout << s[i][j] << " ";
     }
-    cout<<endl; 
+    cout << endl;
   }
 
-  z-=4;
-
-  for (int i=0; i<=size-1; i++)
-  {
-    for (int j=0; j<=i; j++)
-    {
-      cout<<" ";
-    }
-
-    cout<<"*";
-
-    for (int k=1; k<=z; k++)
-    {
-      cout<<" ";
-    }
-    z-=2;
-
-    if (i!=size-1)
-    {
-      cout<<"*";
-    }
-    cout<<endl;
-  }
 return 0;
 }
