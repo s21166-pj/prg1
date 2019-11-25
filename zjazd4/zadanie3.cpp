@@ -26,12 +26,12 @@ int main(){
   }
 
 
-   for (int i = 0; i < 3; i++) {
+  /* for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
         cout << x[i][j] << " ";
     }
     cout << endl;
-  }
-
+  }*/
+cout << 0;
 return 0;
 }
