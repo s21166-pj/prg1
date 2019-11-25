@@ -16,6 +16,7 @@ int main(){
     i = (k-1)/3;
     j = (k-1)%3;
     if(x[i][j]){
+	cout << 0;
         break;
     }
 
@@ -61,7 +62,6 @@ int main(){
 
     l++;
   }
-  cout << 0;
 
   /* for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
@@ -69,6 +69,5 @@ int main(){
     }
     cout << endl;
   }*/
-
 return 0;
 }
