@@ -4,6 +4,7 @@
 
 //Badysiak Pawel
 //Turek Wojciech
+
 using namespace std;
 int main()
 {
