@@ -3,6 +3,9 @@
 #include <string>
 #include <ctime>
 #include <cctype>
+#include <algorithm>
+#include <vector>
+
 using namespace std;
 
 void player_money();
@@ -72,8 +75,8 @@ void roulette_game()
 	int number;
 	int random;
 	string player_choice;
-	int red_numbers[18] = {1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36};
-	int black_numbers[18] = {2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35};
+	vector <int> red_numbers = {1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36};
+	vector <int> black_numbers = {2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35};
 
 
 	random = rand() % 37;
@@ -109,7 +112,7 @@ void roulette_game()
 			cout << "Min bet: 1000$  |  Max bet: 100 000$" << endl;
 				cin >> bet;
 				if (bet >= 1000 && bet <= 100000) {
-					if (number == random){
+					if (count(red_numbers.begin(), red_numbers.end(), random)) {
 					bet = bet*2;
 					win_bet_summary();
 					} else {
@@ -125,7 +128,7 @@ void roulette_game()
 			cout << "Min bet: 1000$  |  Max bet: 100 000$" << endl;
 				cin >> bet;
 				if (bet >= 1000 && bet <= 100000) {
-					if (number == random){
+					if (count(black_numbers.begin(), black_numbers.end(), random)) {
 					bet = bet*2;
 					win_bet_summary();
 					} else {
