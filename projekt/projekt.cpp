@@ -18,6 +18,7 @@ void rules_help();
 
 int const min_loan = 10000;
 int const max_loan = 200000;
+int const owe_multiplyer = -7;
 int const min_no_roulette_bet = 500;
 int const max_no_roulette_bet = 3000;
 int const min_color_roulette_bet = 1000;
@@ -46,7 +47,7 @@ void mafia_loan()
 		cin >> temp_balance;
 			if (temp_balance >= min_loan && temp_balance <= max_loan) {
 				balance += temp_balance;
-				amount_owed = -7*temp_balance;
+				amount_owed = owe_multiplyer*temp_balance;
 				break;
 			} else if (temp_balance < min_loan) {
 				cout << "That's not enough... MORE!" << endl;
@@ -97,7 +98,7 @@ void roulette_game()
 				cout << "How much would you like to bet?" << endl;
 				cout << "Min bet: " << min_no_roulette_bet << "$" << "   |   " << "Max bet: " << max_no_roulette_bet << "$" << endl;
 				cin >> bet;
-				if (bet >= min_no_roulette_bet && bet <= 3000) {
+				if (bet >= min_no_roulette_bet && bet <= max_no_roulette_bet) {
 					if (number == random){
 					bet = bet*35;
 					win_bet_summary();
