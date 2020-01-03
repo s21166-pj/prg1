@@ -17,17 +17,19 @@ void lose_bet_summary();
 void rules_help();
 void blackjack_game();
 
-int const min_loan = 10000;
-int const max_loan = 200000;
-int const owe_multiplyer = -7;
-int const min_no_roulette_bet = 500;
-int const max_no_roulette_bet = 3000;
-int const min_color_roulette_bet = 1000;
-int const max_color_roulette_bet = 100000;
-int const roulette_number_win_multiplyer = 35;
-int const roulette_colour_win_multiplyer = 2;
-int const blackjack_min_bet = 5000;
-int const blackjack_max_bet = 100000;
+int const MIN_LOAN = 10000;
+int const MAX_LOAN = 200000;
+int const OWE_MULTIPLYER = -7;
+int const ROULETTE_MIN_NUMBER_BET = 500;
+int const ROULETTE_MAX_NUMBER_BET = 3000;
+int const ROULETTE_MIN_COLOUR_BET = 1000;
+int const ROULETTE_MAX_COLOUR_BET = 100000;
+int const ROULETTE_NUMBER_WIN_MULTIPLYER = 35;
+int const ROULETTE_COLOUR_WIN_MULTIPLYER = 2;
+int const BLACKJACK_MIN_BET = 5000;
+int const BLACKJACK_MAX_BET = 100000;
+int const BLACKJACK_BET_MULTIPLYER = 2;
+int const MAX_CARDS = 5;
 
 int balance = 0;
 int amount_owed = 0;
@@ -38,9 +40,9 @@ int main()
 	srand(time(NULL));
 	mafia_loan();
 
-	show_ballance();
 
-		menu();
+
+	menu();
 
 	return 0;
 }
@@ -48,41 +50,43 @@ void mafia_loan()
 {	
 	int temp_balance = 0;
 	cout << "How much money would you like to borrow?" << endl;
-	cout << "Min = " << min_loan << "$"  << "   |   " << " Max = " << max_loan << "$" << endl;
+	cout << "Min = " << MIN_LOAN << "$"  << "   |   " << " Max = " << MAX_LOAN << "$" << endl;
 	while(1){
 		cin >> temp_balance;
-			if (temp_balance >= min_loan && temp_balance <= max_loan) {
+			if (temp_balance >= MIN_LOAN && temp_balance <= MAX_LOAN) {
 				balance += temp_balance;
-				amount_owed = owe_multiplyer*temp_balance;
+				amount_owed += OWE_MULTIPLYER*temp_balance;
 				break;
-			} else if (temp_balance < min_loan) {
+			} else if (temp_balance < MIN_LOAN) {
 				cout << "That's not enough... MORE!" << endl;
-			} else if (temp_balance > max_loan) {
+			} else if (temp_balance > MAX_LOAN) {
 				cout << "That's too much... LESS!" << endl;
 				}
 		}
+	show_ballance();
 }
 void menu()	// Menu withc choices of games and availability to borrow more money if we lose all
 {
 	char game_choice;
+	while(1) {
+		cout << "\n";
+		cout << "Which game would you like to choose?" << endl;
+		cout << "[B]lack Jack or [R]oulette?" << endl;
+		cout << "If you would like to borrow more money press [L]" << endl;
+		cin >> game_choice;
 
-	cout << "\n";
-	cout << "Which game would you like to choose?" << endl;
-	cout << "[B]lack Jack or [R]oulette?" << endl;
-	cout << "If you would like to borrow more money press [L]" << endl;
-	cin >> game_choice;
-
-	if (tolower(game_choice) == 'b') {
-		system("clear");
-		blackjack_game();
-	} else if (tolower(game_choice) == 'r') {
-		system("clear");
-		roulette_game();
-	} else if (tolower(game_choice) == 'l') {
-		system("clear");
-		blackjack_game();
-	} else {
-		cout << "Please choose only from available games [B]lackJack or [R]oulette" << endl;
+		if (tolower(game_choice) == 'b') {
+			system("clear");
+			blackjack_game();
+		} else if (tolower(game_choice) == 'r') {
+			system("clear");
+			roulette_game();
+		} else if (tolower(game_choice) == 'l') {
+			system("clear");
+			mafia_loan();
+		} else {
+			cout << "Please choose only from available games [B]lackJack or [R]oulette" << endl;
+		}
 	}
 }
 void roulette_game()
@@ -109,62 +113,62 @@ void roulette_game()
 			cin >> number;
 			while(1) {
 				cout << "How much would you like to bet?" << endl;
-				cout << "Min bet: " << min_no_roulette_bet << "$" << "   |   " << "Max bet: " << max_no_roulette_bet << "$" << endl;
+				cout << "Min bet: " << ROULETTE_MIN_NUMBER_BET << "$" << "   |   " << "Max bet: " << ROULETTE_MAX_NUMBER_BET << "$" << endl;
 				cin >> bet;
-				if (bet >= min_no_roulette_bet && bet <= max_no_roulette_bet) {
+				if (bet >= ROULETTE_MIN_NUMBER_BET && bet <= ROULETTE_MAX_NUMBER_BET) {
 					if (number == random){
-						bet = bet*roulette_number_win_multiplyer;
+						bet = bet*ROULETTE_NUMBER_WIN_MULTIPLYER;
 						win_bet_summary();
 						break;
 						} else {
 							lose_bet_summary();
 							break;
 						}
-				} else if (bet < min_no_roulette_bet) {
+				} else if (bet < ROULETTE_MIN_NUMBER_BET) {
 					cout << "Not enough! More!" << endl;
-				} else if (bet > max_no_roulette_bet) {
+				} else if (bet > ROULETTE_MAX_NUMBER_BET) {
 					cout << "That's too much!" << endl;
 				}
 			} 	// Handling bet on RED logic
 		} else if (tolower(player_choice) == 'r') {
 			system("clear");
 			while(1) {
-			cout << "How much would you like to bet?" << endl;
-			cout << "Min bet: " << min_color_roulette_bet << "$" << "   |   " << "Max bet: " << max_color_roulette_bet << "$" << endl;
+				cout << "How much would you like to bet?" << endl;
+				cout << "Min bet: " << ROULETTE_MIN_COLOUR_BET << "$" << "   |   " << "Max bet: " << ROULETTE_MAX_COLOUR_BET << "$" << endl;
 				cin >> bet;
-				if (bet >= min_color_roulette_bet && bet <= max_color_roulette_bet) {
+				if (bet >= ROULETTE_MIN_COLOUR_BET && bet <= ROULETTE_MAX_COLOUR_BET) {
 					if (count(red_numbers.begin(), red_numbers.end(), random)) {
-						bet = bet*roulette_colour_win_multiplyer;
+						bet = bet*ROULETTE_COLOUR_WIN_MULTIPLYER;
 						win_bet_summary();
 						break;
 						} else {
 							lose_bet_summary();
 							break;
 						}
-				} else if (bet < min_color_roulette_bet) {
+				} else if (bet < ROULETTE_MIN_COLOUR_BET) {
 					cout << "Not enough! More!" << endl;
-				} else if (bet > max_color_roulette_bet) {
+				} else if (bet > ROULETTE_MAX_COLOUR_BET) {
 					cout << "That's too much!" << endl;
 				}
 			}	// Handling bet on BLACK logic
 		} else if (tolower(player_choice) == 'b') {
 			system("clear");
 			while(1) {
-			cout << "How much would you like to bet?" << endl;
-			cout << "Min bet: " << min_color_roulette_bet << "$" << "   |   " << "Max bet: " << max_color_roulette_bet << "$" << endl;
+				cout << "How much would you like to bet?" << endl;
+				cout << "Min bet: " << ROULETTE_MIN_COLOUR_BET << "$" << "   |   " << "Max bet: " << ROULETTE_MAX_COLOUR_BET << "$" << endl;
 				cin >> bet;
-				if (bet >= min_color_roulette_bet && bet <= max_color_roulette_bet) {
+				if (bet >= ROULETTE_MIN_COLOUR_BET && bet <= ROULETTE_MAX_COLOUR_BET) {
 					if (count(black_numbers.begin(), black_numbers.end(), random)) {
-						bet = bet*roulette_colour_win_multiplyer;
+						bet = bet*ROULETTE_COLOUR_WIN_MULTIPLYER;
 						win_bet_summary();
 						break;
 					} else {
 						lose_bet_summary();
 						break;
 					}
-				} else if (bet < min_color_roulette_bet) {
+				} else if (bet < ROULETTE_MIN_COLOUR_BET) {
 					cout << "Not enough! More!" << endl;
-				} else if (bet > max_color_roulette_bet) {
+				} else if (bet > ROULETTE_MAX_COLOUR_BET) {
 					cout << "That's too much!" << endl;
 				}
 			}
@@ -202,34 +206,172 @@ void rules_help()
 {
 	//if (tolower(game_choice == 'r')
 }
-struct Cards
-{
-	int value;
-	char suit;
+// struct Cards
+// {
+// 	int value;
+// 	char suit;
 	
-};
-void blackjack_game()
+// };
+	// checks if card from deck has been used already
+bool has_been_dealt(int random_suit,int random_card,int player_cards[] ,int dealer_cards[])
 {
-	int dealer_hand = 0;
-	int player_hand = 0;
-	
+	for(int i = 0; i>MAX_CARDS*2; i=i+2) {
+		if (player_cards[i] == random_suit) {
+			if (player_cards[i+1] == random_card) {
+				return true;
+			}
+		}
+		if (dealer_cards[i] == random_suit) {
+			if (dealer_cards[i+1] == random_card) {
+				return true;
+			}
+		}	
+	}
+	return false;
+}
+void blackjack_logic()
+{
+	int dealer_total = 0;
+	int player_total = 0;
+
 	int random_card;
 	int random_suit;
 
-	string deck [4][13] = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jokey", "Queen", "King", "Ace",
-							"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jokey", "Queen", "King", "Ace",
-							"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jokey", "Queen", "King", "Ace",
-							"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jokey", "Queen", "King", "Ace",};	
+	int player_cards[MAX_CARDS*2];
+	int dealer_cards[MAX_CARDS*2];
+	// zeroing arrays
+	for(int i = 0; i<MAX_CARDS*2; i++) {
+		player_cards[i] = -1;
+		dealer_cards[i] = -1;
+	}
+	int player_displayed_cards = 2;
+	int dealer_displayed_cards = 2;
+	
+	bool player_turn = true;
+	bool dealer_turn = false;
 
+	char bj_game_choice = 0;
+
+	string deck [13] = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jokey", "Queen", "King", "Ace",};	
 	string suit [4] = {"Clubs", "Diamonds", "Hearts", "Spades"};
 	int value [13] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
+	
+	// rolling new cards -> checking if has_been_dealt and if not assing card to a player
+	for(int i=0; i<MAX_CARDS*2; i=i+2) {
+		do {	
+			random_suit = rand() % 4;
+			random_card = rand() % 13;
+		} while (has_been_dealt(random_suit, random_card, player_cards, dealer_cards));
+			player_cards[i] = random_suit;	
+			player_cards[i+1] = random_card;
+	}
+	for(int i=0; i<MAX_CARDS*2; i=i+2) {
+		do {
+			random_suit = rand() % 4;
+			random_card = rand() % 13;
+		} while (has_been_dealt(random_suit, random_card, player_cards, dealer_cards));
+			dealer_cards[i] = random_suit;
+			dealer_cards[i+1] = random_card;
+	}
+	
+	
+	while(1) {
+		player_total = 0;
+		dealer_total = 0;
+		// Displaying max_no_cards (default=2) and summing up their value
+		cout << "Your cards: ";
+		for(int i=0; i<player_displayed_cards*2; i=i+2) {
+			cout << deck[player_cards[i+1]] << " of " << suit[player_cards[i]];
+			if (i<player_displayed_cards*2-2) {
+				cout << " and ";
+			}
+			player_total = player_total + value[player_cards[i+1]];
+		}
+		cout << endl << "You: " << player_total << endl;
+		
+		cout << "Dealer cards: ";
+		for(int i=0; i<dealer_displayed_cards*2; i=i+2) {
+			cout << deck[dealer_cards[i+1]] << " of " << suit[dealer_cards[i]];
+			if (i<dealer_displayed_cards*2-2) {
+				cout << " and ";
+			}
+			dealer_total = dealer_total + value[dealer_cards[i+1]];
+		}
+		cout << endl << "Dealer: " << dealer_total << endl;
+		
+		if(player_total == 21 && dealer_total == 21) {
+			cout << "It's a draw!" << endl;
+			break;
+		} else if (player_total == 21) {
+			cout << "You've got BlackJack!" << endl;
+			win_bet_summary();
+			break;
+		} else if (dealer_total == 21) {
+			lose_bet_summary();
+			break;
+		}
+		if (player_turn) {
+			cout << "[S]tay or [H]it" << endl;
+			cin >> bj_game_choice;
+			if (tolower(bj_game_choice) == 'h') {
+				player_displayed_cards += 1;
+				int new_sum = player_total + value[player_cards[player_displayed_cards*2-1]];
+				if ( new_sum > 21) {
+					player_turn = false;
+				}
+			} else {
+				player_turn = false;
+				dealer_turn = true;
+			}	
+		}
+		if (dealer_turn)  {
+			if(dealer_total <= 16 && dealer_displayed_cards < MAX_CARDS) {
+				dealer_displayed_cards += 1;
+			} else {
+				dealer_turn = false;
+			}
+		}
+		if(tolower(bj_game_choice) == 'h') {
+		    if (player_total > 21) {
+				lose_bet_summary();
+				break;
+			}
+		}
+		if(tolower(bj_game_choice) == 's') {
+			if (!dealer_turn) {
+				if (dealer_total > 21) {
+					win_bet_summary();
+					break;
+				} else if (player_total > dealer_total) {
+					win_bet_summary();
+					break;
+				} else if (player_total < dealer_total) {
+					lose_bet_summary();
+					break;
+				} else if (player_total == dealer_total) {
+					cout << "PUSH" << endl;
+					break;
+				}
+			}
+		}
+		
+		
+	}
+}	
+void blackjack_game()
+{	
 
 	cout << "Welcome to BlackJack!" << endl;
 	while(1) {
-		random_card = rand() % 13;
-		random_suit = rand() % 4;
 		cout << "How much would you like to bet?" << endl;
-		cout << "Min bet: " << blackjack_min_bet << "$" << "   |   " << "Max bet: " << blackjack_max_bet << "$" << endl;
-		
+		cout << "Min bet: " << BLACKJACK_MIN_BET << "$" << "   |   " << "Max bet: " << BLACKJACK_MAX_BET << "$" << endl;
+		cin >> bet;
+		if (bet >= BLACKJACK_MIN_BET && bet <= BLACKJACK_MAX_BET) {
+			blackjack_logic();
+		} else if (bet < BLACKJACK_MIN_BET) {
+			cout << "Not enough! More!" << endl;
+		} else if (bet > BLACKJACK_MAX_BET) {
+			cout << "That's too much!" << endl;
+		}
 	}
 }
