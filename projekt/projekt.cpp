@@ -5,17 +5,21 @@
 #include <cctype>
 #include <algorithm>
 #include <vector>
+#include <unistd.h>
 
 using namespace std;
 
 void show_ballance();
 void mafia_loan();
+void debt_collector();
 void menu();
 void roulette_game();
 void win_bet_summary();
 void lose_bet_summary();
 void rules_help();
 void blackjack_game();
+void blackjack_logic();
+bool has_been_dealt();
 
 int const MIN_LOAN = 10000;
 int const MAX_LOAN = 200000;
@@ -92,9 +96,10 @@ void debt_collector()
 				cin >> final_decision;
 				if (tolower(final_decision) == 'n') {
 					exit(0);
-				} else {
-					break;
 				}
+			} else {
+				sleep(2);
+				break;	
 			}
 		}
 	}
