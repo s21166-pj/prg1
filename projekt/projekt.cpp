@@ -65,6 +65,40 @@ void mafia_loan()
 		}
 	show_ballance();
 }
+void debt_collector()
+{
+	char final_decision;
+	int paying_debt;
+	while(1) {
+		system("clear");
+		cout << "So.... You came here to pay your debt?  *sigh*..." << endl;
+		cout << "How much are you willing to pay ?" << endl;
+		cout << "If you want to pay part of it, remember to leave some money to play > 10 000$" << endl;
+		show_ballance();
+		cin >> paying_debt;
+		if ((balance-paying_debt) <= MIN_LOAN) {
+			cout << "You need to leave yourself at least 10 000$" << endl;
+		} else if (paying_debt > balance) {
+			cout << "You don't have that much money!" << endl;
+		} else if (paying_debt < balance && (balance-paying_debt) >= MIN_LOAN) {
+			balance -= paying_debt;
+			amount_owed += paying_debt;
+			cout << "Now your balance and debt look like this:" << endl;
+			show_ballance();
+			if (amount_owed == 0) {
+				cout << "Congratulations ! You've paid your debt and you can play on your own account!" << endl;
+				cout << "If you had bad luck, don't hessitate to borrow money from us ^.-" << endl;
+				cout << "Do you want to keep playing? [Y]es or [N]o" << endl;
+				cin >> final_decision;
+				if (tolower(final_decision) == 'n') {
+					exit(0);
+				} else {
+					break;
+				}
+			}
+		}
+	}
+}
 void menu()	// Menu withc choices of games and availability to borrow more money if we lose all
 {
 	char game_choice;
@@ -72,7 +106,9 @@ void menu()	// Menu withc choices of games and availability to borrow more money
 		cout << "\n";
 		cout << "Which game would you like to choose?" << endl;
 		cout << "[B]lack Jack or [R]oulette?" << endl;
-		cout << "If you would like to borrow more money press [L]" << endl;
+		cout << "\n";
+		cout << "Borrow more money [L]" << endl;
+		cout << "Pay your debt [P]" << endl; 
 		cin >> game_choice;
 
 		if (tolower(game_choice) == 'b') {
@@ -84,6 +120,9 @@ void menu()	// Menu withc choices of games and availability to borrow more money
 		} else if (tolower(game_choice) == 'l') {
 			system("clear");
 			mafia_loan();
+		} else if (tolower(game_choice) == 'p') {
+			system("clear");
+			debt_collector();
 		} else {
 			cout << "Please choose only from available games [B]lackJack or [R]oulette" << endl;
 		}
@@ -199,7 +238,6 @@ void show_ballance()
 void win_bet_summary()
 {
 	balance += bet;
-	amount_owed += bet;
 	cout << "Wygrałeś " << bet << "$!" << endl;
 	show_ballance();
 	bet = 0;
@@ -207,7 +245,6 @@ void win_bet_summary()
 void lose_bet_summary()
 {
 	balance -= bet;
-	amount_owed -= bet;
 	cout << "Przegrałeś " << bet << "$ :(" << endl;
 	show_ballance();
 	bet = 0;
@@ -276,6 +313,7 @@ void blackjack_logic()
 			player_cards[i] = random_suit;	
 			player_cards[i+1] = random_card;
 	}
+	// rolling new card for dealer ( has been dealt checks if card has been given already)
 	for(int i=0; i<MAX_CARDS*2; i=i+2) {
 		do {
 			random_suit = rand() % 4;
@@ -311,6 +349,7 @@ void blackjack_logic()
 		}
 		cout << endl << "Dealer: " << dealer_total << endl;
 		
+		// checking first deal of cards
 		if(player_total == 21 && dealer_total == 21) {
 			cout << "It's a draw!" << endl;
 			break;
