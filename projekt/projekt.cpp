@@ -80,10 +80,10 @@ void debt_collector()
 		cout << "If you want to pay part of it, remember to leave some money to play > 10 000$" << endl;
 		show_ballance();
 		cin >> paying_debt;
-		if ((balance-paying_debt) <= MIN_LOAN) {
-			cout << "You need to leave yourself at least 10 000$" << endl;
-		} else if (paying_debt > balance) {
+		if (paying_debt > balance) {
 			cout << "You don't have that much money!" << endl;
+		} else if ((balance-paying_debt) <= MIN_LOAN) {
+			cout << "You need to leave yourself at least 10 000$" << endl;
 		} else if (paying_debt < balance && (balance-paying_debt) >= MIN_LOAN) {
 			balance -= paying_debt;
 			amount_owed += paying_debt;
@@ -98,7 +98,7 @@ void debt_collector()
 					exit(0);
 				}
 			} else {
-				sleep(2);
+				sleep(3);
 				break;	
 			}
 		}
@@ -133,6 +133,26 @@ void menu()	// Menu withc choices of games and availability to borrow more money
 		}
 	}
 }
+void roulette_strip(int random)
+{
+	vector <int> strip = {0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26};
+	int timer = 1;
+	int refreshing_strip = 5;
+	int rand_index;
+	int x = 5;
+	vector <int>::iterator itr = find(strip.begin(), strip.end(), random);
+	
+	if (itr != strip.cend()) {
+		rand_index = distance(strip.begin(), itr);
+	}
+	for(int i=0; i<refreshing_strip; i++) {
+		sleep(timer);
+		for(int j=0; j<11; j++) {
+			cout << strip[rand_index-x] << endl;
+			x++;
+		}
+	}
+}
 void roulette_game()
 {
 	int number;
@@ -160,6 +180,7 @@ void roulette_game()
 				cout << "Min bet: " << ROULETTE_MIN_NUMBER_BET << "$" << "   |   " << "Max bet: " << ROULETTE_MAX_NUMBER_BET << "$" << endl;
 				cin >> bet;
 				if (bet >= ROULETTE_MIN_NUMBER_BET && bet <= ROULETTE_MAX_NUMBER_BET) {
+					//roulette_strip(random);
 					if (number == random){
 						bet = bet*ROULETTE_NUMBER_WIN_MULTIPLYER;
 						win_bet_summary();
@@ -237,8 +258,8 @@ void roulette_game()
 }
 void show_ballance()
 {
-	cout << "Balance: " << balance << endl;
-	cout << "You owe: " << amount_owed << endl;
+	cout << "Balance: " << balance << "$" << endl;
+	cout << "You owe: " << amount_owed << "$" << endl;
 }
 void win_bet_summary()
 {
