@@ -184,7 +184,6 @@ void roulette_game()
 	cout << "Welcome to Roulette!" << endl;
 	while(1) {
 		random = rand() % 37;
-		cout << "your random number from 0 - 36 is " << random << endl;
 		cout << "What would you like to bet on?" << endl;
 		cout << "[N]umber ? Colour [R]ed or [B]lack ? For rules press [H]elp or get back to [M]enu"<< endl;
 		cin >> player_choice;
@@ -228,6 +227,7 @@ void roulette_game()
 								win_bet_summary();
 								break;
 								} else {
+									cout << "Ball landed on black :(" << endl;
 									lose_bet_summary();
 									break;
 								}
@@ -254,6 +254,7 @@ void roulette_game()
 							win_bet_summary();
 							break;
 						} else {
+							cout << "Ball landed on Red :(" << endl;
 							lose_bet_summary();
 							break;
 						}
@@ -388,7 +389,7 @@ void blackjack_logic()
 		cout << endl << "You: " << player_total << endl;
 		
 		// Displaying dealer cards and summing up total value
-		cout << "Dealer cards: ";Ty 
+		cout << "Dealer cards: ";
 		for(int i=0; i<dealer_displayed_cards*2; i=i+2) {
 			cout << deck[dealer_cards[i+1]] << " of " << suit[dealer_cards[i]];
 			if (i<dealer_displayed_cards*2-2) {
@@ -466,7 +467,6 @@ void blackjack_logic()
 }	
 void blackjack_game()
 {	
-	
 	cout << "Welcome to BlackJack!" << endl;
 	cout << "\n";
 	if (blackjack_rules == true) {
