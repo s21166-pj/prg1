@@ -38,6 +38,7 @@ int const MAX_CARDS = 5;
 int balance = 0;
 int amount_owed = 0;
 int bet = 0;
+bool blackjack_rules = true;
 
 int main()
 {
@@ -83,13 +84,13 @@ void debt_collector()
 		if (paying_debt > balance) {
 			cout << "You don't have that much money!" << endl;
 		} else if ((balance-paying_debt) <= MIN_LOAN) {
-			cout << "You need to leave yourself at least 10 000$" << endl;
+			cout << "You need to leave yourself at least " << MIN_LOAN << "$" << endl;
 		} else if (paying_debt < balance && (balance-paying_debt) >= MIN_LOAN) {
 			balance -= paying_debt;
 			amount_owed += paying_debt;
 			cout << "Now your balance and debt look like this:" << endl;
 			show_ballance();
-			if (amount_owed == 0) {
+			if (amount_owed >= 0) {
 				cout << "Congratulations ! You've paid your debt and you can play on your own account!" << endl;
 				cout << "If you had bad luck, don't hessitate to borrow money from us ^.-" << endl;
 				cout << "Do you want to keep playing? [Y]es or [N]o" << endl;
@@ -136,22 +137,40 @@ void menu()	// Menu withc choices of games and availability to borrow more money
 void roulette_strip(int random)
 {
 	vector <int> strip = {0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26};
-	int timer = 1;
-	int refreshing_strip = 5;
-	int rand_index;
-	int x = 5;
-	vector <int>::iterator itr = find(strip.begin(), strip.end(), random);
-	
-	if (itr != strip.cend()) {
-		rand_index = distance(strip.begin(), itr);
-	}
-	for(int i=0; i<refreshing_strip; i++) {
-		sleep(timer);
-		for(int j=0; j<11; j++) {
-			cout << strip[rand_index-x] << endl;
-			x++;
-		}
-	}
+    int timer = 1;
+    int refreshing_strip = 8;
+    int rand_index;
+    int x = 5;
+    vector <int>::iterator itr = find(strip.begin(), strip.end(), random);
+ 
+    if (itr != strip.cend()) {
+        rand_index = distance(strip.begin(), itr);
+    }
+   
+    rand_index -= x;
+    if (rand_index < 0) rand_index += strip.size();
+ 
+    cout << endl;
+    for(int i=0; i<refreshing_strip; i++) {
+        system("clear");
+        for(int j=0; j<11; j++) {
+            int idx = (rand_index+j) % strip.size();
+            cout << strip[idx] << "\t";
+        }
+        cout << endl;
+        for(int j=0; j<11; j++) {
+            if (j == 5) cout << "O";
+            else cout << " ";
+            cout << "\t";
+        }
+        if (i == refreshing_strip - 2) {
+            rand_index += 7;
+        } else {
+            rand_index += 5;
+        }
+        sleep(timer);
+        cout << endl;
+    }
 }
 void roulette_game()
 {
@@ -180,7 +199,7 @@ void roulette_game()
 				cout << "Min bet: " << ROULETTE_MIN_NUMBER_BET << "$" << "   |   " << "Max bet: " << ROULETTE_MAX_NUMBER_BET << "$" << endl;
 				cin >> bet;
 				if (bet >= ROULETTE_MIN_NUMBER_BET && bet <= ROULETTE_MAX_NUMBER_BET) {
-					//roulette_strip(random);
+					roulette_strip(random);
 					if (number == random){
 						bet = bet*ROULETTE_NUMBER_WIN_MULTIPLYER;
 						win_bet_summary();
@@ -228,7 +247,7 @@ void roulette_game()
 				cout << "How much would you like to bet?" << endl;
 				cout << "Min bet: " << ROULETTE_MIN_COLOUR_BET << "$" << "   |   " << "Max bet: " << ROULETTE_MAX_COLOUR_BET << "$" << endl;
 				cin >> bet;
-				if ( bet <= balance) {
+				if (bet <= balance) {
 					if (bet >= ROULETTE_MIN_COLOUR_BET && bet <= ROULETTE_MAX_COLOUR_BET) {
 						if (count(black_numbers.begin(), black_numbers.end(), random)) {
 							bet = bet*ROULETTE_COLOUR_WIN_MULTIPLYER;
@@ -248,7 +267,7 @@ void roulette_game()
 				}
 			}
 		} else if (tolower(player_choice) == 'h') {
-			//rules_help();
+			rules_help();
 		} else if (tolower(player_choice) == 'm') {
 			menu();
 		} else {
@@ -277,7 +296,11 @@ void lose_bet_summary()
 }
 void rules_help()
 {
-	//if (tolower(game_choice == 'r')
+	system("clear");
+	cout << "Playing on [N]umber - You choose number from 0 to 35 and winrate is 35/1" << endl;
+	cout << "By playin on [R]eds or [B]lacks you win only when ball lands on specific colour" << endl;
+	cout << "(nearly half of roulette is either black or red (except number 0 which is green))" << endl;
+	cout << "\n";
 }
 // struct Cards
 // {
@@ -365,7 +388,7 @@ void blackjack_logic()
 		cout << endl << "You: " << player_total << endl;
 		
 		// Displaying dealer cards and summing up total value
-		cout << "Dealer cards: ";
+		cout << "Dealer cards: ";Ty 
 		for(int i=0; i<dealer_displayed_cards*2; i=i+2) {
 			cout << deck[dealer_cards[i+1]] << " of " << suit[dealer_cards[i]];
 			if (i<dealer_displayed_cards*2-2) {
@@ -443,8 +466,18 @@ void blackjack_logic()
 }	
 void blackjack_game()
 {	
-
+	
 	cout << "Welcome to BlackJack!" << endl;
+	cout << "\n";
+	if (blackjack_rules == true) {
+		cout << "It's a classic game, sometimes called '21'" << endl;
+		cout << "To win you have to have more than Croupier, but up to 21 points" << endl;
+		cout << "You lose either exceeding 21 points or having less than Cruopier at the end" << endl;
+		cout << "When you have the same amount of points in cards it's a draw" << endl;
+		cout << "Winning grants you 2/1 winnings :)" << endl;
+		cout << "\n";
+		blackjack_rules = false;
+	}
 	while(1) {
 		cout << "How much would you like to bet?" << endl;
 		cout << "Min bet: " << BLACKJACK_MIN_BET << "$" << "   |   " << "Max bet: " << BLACKJACK_MAX_BET << "$" << endl;
